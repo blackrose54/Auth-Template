@@ -46,7 +46,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 parsedData.data.email
               );
               if (!token) {
-                
                 throw new Error("2FA:NoToken");
               }
               if (parsedData.data.code) {
@@ -126,9 +125,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return true;
     },
-    async redirect(){
-      return '/dashboard';
-    }
+    async redirect() {
+      return "/dashboard";
+    },
+    jwt({ user, token }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    session({ session, token }) {
+      session.user.id = token.id as string;
+      return session;
+    },
   },
   events: {
     async linkAccount({ user }) {

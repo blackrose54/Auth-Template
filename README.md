@@ -2,15 +2,8 @@
 
 ## Overview
 
-Provide a brief description of your project here.
-
-## Table of Contents
-
-- [Installation](#installation)
-- [Setup](#setup)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+An Authentication workflow in Nextjs using next-auth.
+Supports credential sign in and also google oauth.
 
 ## Installation
 
@@ -19,8 +12,9 @@ Follow these steps to install the project:
 1. **Clone the repository:**
 
     ```sh
-    git clone https://github.com/your-username/your-repo.git
-    cd your-repo
+    git clone https://github.com/blackrose54/Auth-Template.git
+
+    cd Auth-Template
     ```
 
 2. **Install dependencies:**

@@ -145,7 +145,7 @@ export async function resendConfirmationEmail(email: string) {
     await prisma.verificationToken.delete({
       where: {
         email,
-		token: exisitingtoken.token,
+        token: exisitingtoken.token,
       },
     });
   }
@@ -183,9 +183,8 @@ export async function sendConformationMail(email: string) {
   await sendMail(mailOptions);
 }
 
-export const sendTwoFactorTokenEmail = async (email:string,token:string) => {
-  
-const mailOptions: MailOptions = {
+export const sendTwoFactorTokenEmail = async (email: string, token: string) => {
+  const mailOptions: MailOptions = {
     from: process.env.EMAIL,
     to: email,
     subject: "Two Factor Authentication Code",
@@ -193,8 +192,7 @@ const mailOptions: MailOptions = {
   };
 
   await sendMail(mailOptions);
-
-}
+};
 
 export async function sendPasswordResetMail(email: string) {
   const user = await prisma.user.findUnique({
@@ -717,8 +715,8 @@ const resetPasswordEmailhtml = async (email: string) => {
 </html>`;
 };
 
-const twoFactorTokenEmailhtml = (token:string)=>{
-return `<!DOCTYPE html>
+const twoFactorTokenEmailhtml = (token: string) => {
+  return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -766,5 +764,5 @@ return `<!DOCTYPE html>
     </div>
 </body>
 </html>
-`
-}
+`;
+};

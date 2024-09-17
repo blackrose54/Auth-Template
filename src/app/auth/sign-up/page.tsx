@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import { oauth, signUp } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,13 +13,11 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useForm, SubmitHandler, SubmitErrorHandler } from "react-hook-form";
-import { UserSignUp, userSignUp } from "@/lib/userSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { oauth, signUp } from "@/actions/auth";
-import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
 import { sendConformationMail } from "@/lib/mail";
+import { UserSignUp, userSignUp } from "@/lib/userSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
 
 export default function LoginForm() {
   const {
@@ -35,7 +34,7 @@ export default function LoginForm() {
       e?.nativeEvent as SubmitEvent
     ).submitter?.innerText.includes("Google");
     if (istrue) {
-      await oauth("google")
+      await oauth("google");
       clearErrors();
     } else {
       const res = await signUp(data);
@@ -57,19 +56,19 @@ export default function LoginForm() {
     }
   };
 
-  const onError: SubmitErrorHandler<UserSignUp> = (data, e) => {
+  const onError: SubmitErrorHandler<UserSignUp> = async (data, e) => {
     const istrue = (
       e?.nativeEvent as SubmitEvent
     ).submitter?.innerText.includes("Google");
     if (istrue) {
-      console.log("hi");
+      await oauth("google");
       clearErrors();
     }
   };
 
   return (
     <main className="h-screen flex items-center justify-center">
-      <Card className="mx-auto max-w-sm ">
+      <Card className="mx-auto max-w-sm border-border/100 ">
         <CardHeader>
           <CardTitle className="text-xl">Sign Up</CardTitle>
           <CardDescription>
@@ -81,7 +80,7 @@ export default function LoginForm() {
             className="grid gap-4"
             onSubmit={handleSubmit(onSubmit, onError)}
           >
-            <div className="grid gap-4">
+            <div className="grid gap-2">
               <Label htmlFor="first-name">Name</Label>
               <Input id="first-name" placeholder="Max" {...register("name")} />
 
@@ -124,8 +123,10 @@ export default function LoginForm() {
           </form>
           <div className="mt-4 text-center text-sm">
             Already have an account?{" "}
-            <Link href="/auth/sign-in" className="underline">
-              Sign in
+            <Link href="/auth/sign-in">
+              <Button variant={"link"} className="p-0">
+                Sign in
+              </Button>
             </Link>
           </div>
         </CardContent>

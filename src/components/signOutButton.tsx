@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 export default function Logout() {
   return (
     <div>
-      <Button type="submit" onClick={()=>signOut()} >
+      <Button type="submit" variant={'destructive'} onClick={()=>signOut()} >
         Sign Out
       </Button>
     </div>

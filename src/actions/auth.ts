@@ -1,24 +1,19 @@
 "use server";
 
-import { signIn, signOut } from "@/auth";
+import { signIn } from "@/auth";
 import prisma from "@/lib/db";
-import { sendTwoFactorTokenEmail } from "@/lib/mail";
-import {
-  generateTwoFactorToken,
-  getTwoFactorTokenByEmail,
-} from "@/lib/twoFactor";
 import { UserLogin, UserSignUp, userSignUp } from "@/lib/userSchema";
 import { BuiltInProviderType } from "@auth/core/providers";
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
+import { revalidatePath } from "next/cache";
 import { isRedirectError } from "next/dist/client/components/redirect";
 
 export async function oauth(provider: BuiltInProviderType) {
-  await signIn(provider);
+  await signIn(provider, {});
 }
 export async function login(data: UserLogin) {
   try {
-
     await signIn("credentials", data);
     return undefined;
   } catch (error) {
@@ -35,7 +30,6 @@ export async function login(data: UserLogin) {
         default:
           return "Something went wrong.";
       }
-
     }
 
     throw error;
@@ -66,7 +60,7 @@ export async function signUp(data: UserSignUp) {
     });
     return {
       status: "success",
-      data: "Click on the activation link send to your eamil",
+      data: "Click on the activation link send to your email",
     };
   }
 }
@@ -97,6 +91,36 @@ export async function resetPassword({
     });
 
     return { status: "success", data: "Password reset successfully" };
+  } catch (error) {
+    return { status: "error", data: "Something went wrong" };
+  }
+}
+
+export async function toggleTFA(email: string) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) return { status: "error", data: "User does not exist" };
+
+    await prisma.user.update({
+      where: {
+        email,
+      },
+      data: {
+        twoFactorEnabled: !user.twoFactorEnabled,
+      },
+    });
+    revalidatePath("/dashboard");
+    return {
+      status: "success",
+      data: `Two Factor Authenticatoin ${
+        user.twoFactorAuthenticationEmail ? "disabled" : "enabled"
+      }`,
+    };
   } catch (error) {
     return { status: "error", data: "Something went wrong" };
   }

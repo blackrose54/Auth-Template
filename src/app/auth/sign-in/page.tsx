@@ -14,13 +14,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
+import { sendTwoFactorTokenEmail } from "@/lib/mail";
+import { generateTwoFactorToken } from "@/lib/twoFactor";
 import { UserLogin, userlogin } from "@/lib/userSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { generateTwoFactorToken } from "@/lib/twoFactor";
-import { sendTwoFactorTokenEmail } from "@/lib/mail";
+import { useState } from "react";
+import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
 
 export default function LoginForm() {
   const {
@@ -28,7 +28,6 @@ export default function LoginForm() {
     handleSubmit,
     formState: { errors, isSubmitting },
     clearErrors,
-    reset,
   } = useForm<UserLogin>({
     resolver: zodResolver(userlogin),
   });
@@ -88,17 +87,20 @@ export default function LoginForm() {
       await oauth("google");
     }
   };
+
   return (
     <form
-      className=" h-screen flex justif-center items-center"
+      className=" h-screen flex justify-center items-center"
       onSubmit={handleSubmit(onSubmit, onError)}
     >
-      <Card className="mx-auto max-w-sm min-w-[20rem]">
+      <Card className="mx-auto border-border/100 max-w-sm min-w-[20rem]">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
-            <CardDescription>
-              {!showtwofactor ? "Enter your email below to login to your account":"A 6 digit OTP has been sent to your email address"}
-            </CardDescription>
+          <CardDescription>
+            {!showtwofactor
+              ? "Enter your email below to login to your account"
+              : "A 6 digit OTP has been sent to your email address"}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4">
@@ -123,9 +125,11 @@ export default function LoginForm() {
                     <Label htmlFor="password">Password</Label>
                     <Link
                       href="/auth/reset"
-                      className="ml-auto inline-block text-sm underline"
+                      className="ml-auto inline-block text-sm "
                     >
-                      Forgot your password?
+                      <Button variant={"link"} className=" p-0">
+                        Forgot your password?
+                      </Button>
                     </Link>
                   </div>
 
@@ -161,20 +165,26 @@ export default function LoginForm() {
             <Button type="submit" className="w-full" disabled={isSubmitting}>
               {showtwofactor ? "Confrim" : "Login"}
             </Button>
-            <Button
-              variant="outline"
-              className="w-full"
-              disabled={isSubmitting}
-            >
-              Login with Google
-            </Button>
+            {!showtwofactor && (
+              <Button
+                variant="outline"
+                className="w-full"
+                disabled={isSubmitting}
+              >
+                Login with Google
+              </Button>
+            )}
           </div>
-          <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account?{" "}
-            <Link href="/auth/sign-up" className="underline">
-              Sign up
-            </Link>
-          </div>
+          {!showtwofactor && (
+            <div className="mt-4 text-center text-sm">
+              Don&apos;t have an account?{" "}
+              <Link href="/auth/sign-up">
+                <Button className=" p-0" variant={"link"}>
+                  Sign up
+                </Button>
+              </Link>
+            </div>
+          )}
         </CardContent>
       </Card>
     </form>

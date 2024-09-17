@@ -4,8 +4,8 @@ export default auth((req) => {
   // req.auth
   const isLoggedIn = !!req.auth
 
-  const publicRoutes = ['/'];
-  const authRoutes = ['/auth/sign-in','/auth/sign-up','/auth/verifyToken','/auth/reset','/auth/verifyPasswordResetToken','/auth/new-password']
+  const publicRoutes = ['/','/about',,'/contact','/auth/reset','/auth/verifyPasswordResetToken','/auth/new-password'];
+  const authRoutes = ['/auth/sign-in','/auth/sign-up','/auth/verifyToken']
   const apiAuthPrefix = '/api/auth';
     const defaultLoginRedirect = '/dashboard'
 
@@ -27,5 +27,5 @@ export default auth((req) => {
  
 // Optionally, don't invoke Middleware on some paths
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|favicon.svg).*)"],
 }

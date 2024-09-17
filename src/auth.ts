@@ -1,20 +1,19 @@
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import bcrypt from "bcryptjs";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { userlogin } from "./lib/userSchema";
 import Google from "next-auth/providers/google";
-import bcrypt from "bcryptjs";
 import prisma from "./lib/db";
 import {
-  generateTwoFactorToken,
   getTwoFactorConfirmationByUserID,
-  getTwoFactorTokenByEmail,
+  getTwoFactorTokenByEmail
 } from "./lib/twoFactor";
-import { sendTwoFactorTokenEmail } from "./lib/mail";
+import { userlogin } from "./lib/userSchema";
+import { BuiltInProviderType } from "@auth/core/providers";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
-
+  trustHost:true,
   providers: [
     Credentials({
       credentials: {
@@ -96,13 +95,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
     Google,
   ],
-  debug: true,
   session: {
     strategy: "jwt",
   },
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider !== "credentials") return true;
+
+      
 
       const existinguser = await prisma.user.findUnique({
         where: {
@@ -117,6 +117,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const twofactorConfirmation = await getTwoFactorConfirmationByUserID(
           user.id
         );
+
+        
+        if(!twofactorConfirmation) return false;
+
         await prisma.twoFactorConfirmation.delete({
           where: {
             userId: user.id,
@@ -128,16 +132,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async redirect() {
       return "/dashboard";
     },
-    jwt({ user, token }) {
+    jwt({ user, token ,account}) {
       if (user) {
         token.id = user.id;
+        token.provider = account?.provider
       }
       return token;
     },
     session({ session, token }) {
       session.user.id = token.id as string;
+      session.user.provider = token.provider as BuiltInProviderType;
       return session;
     },
+    
   },
   events: {
     async linkAccount({ user }) {
@@ -150,8 +157,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
       });
     },
+   
   },
   pages: {
     signIn: "/auth/sign-in",
+    
   },
 });

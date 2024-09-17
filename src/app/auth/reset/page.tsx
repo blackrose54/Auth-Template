@@ -5,15 +5,13 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { sendPasswordResetMail } from "@/lib/mail";
-import Link from "next/link";
-import React, { FC, ReactElement, useState, useTransition } from "react";
+import { FC, ReactElement, useState, useTransition } from "react";
 
 interface pageProps {}
 
@@ -23,7 +21,7 @@ const Page: FC<pageProps> = ({}): ReactElement => {
   const [error, seterror] = useState<string>("");
   return (
     <main className=" h-screen flex items-center justify-center">
-      <Card>
+      <Card className=" border-border">
         <CardHeader className=" text-center">
           <CardTitle>Reset Password</CardTitle>
           <CardDescription>Forgot your Password ?</CardDescription>
@@ -62,17 +60,6 @@ const Page: FC<pageProps> = ({}): ReactElement => {
           </form>
           <p className=" text-red-500 text-xs">{error}</p>
         </CardContent>
-        <CardFooter>
-          <p>
-            Already have an Account?{" "}
-            <Link
-              href={"/auth/sign-in"}
-              className=" underline underline-offset-2"
-            >
-              Sign In
-            </Link>
-          </p>
-        </CardFooter>
       </Card>
     </main>
   );

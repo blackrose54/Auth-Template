@@ -4,12 +4,16 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { SessionProvider } from "next-auth/react";
+import Navbar from "@/components/navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Chat",
-  description: "Real Time chat application",
+  title: "Auth",
+  description: "Auth Template",
+  icons:{
+    icon:'/favicon.svg',
+  }
 };
 
 export default function RootLayout({
@@ -22,6 +26,7 @@ export default function RootLayout({
       <SessionProvider>
         <body className={inter.className}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+            <Navbar />
             {children}
             <Toaster />
           </ThemeProvider>

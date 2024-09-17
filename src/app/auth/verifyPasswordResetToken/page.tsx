@@ -2,10 +2,9 @@
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card";
 
 import { toast } from "@/components/ui/use-toast";
@@ -13,7 +12,7 @@ import { verifyPasswordResetToken } from "@/lib/mail";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { FC, ReactElement, useEffect, useState } from "react";
+import { FC, ReactElement, useEffect, useState } from "react";
 
 interface pageProps {}
 

@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Project Name
 
-## Getting Started
+## Overview
 
-First, run the development server:
+Provide a brief description of your project here.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Table of Contents
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- [Installation](#installation)
+- [Setup](#setup)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Follow these steps to install the project:
 
-## Learn More
+1. **Clone the repository:**
 
-To learn more about Next.js, take a look at the following resources:
+    ```sh
+    git clone https://github.com/your-username/your-repo.git
+    cd your-repo
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Install dependencies:**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+    Make sure you have [Node.js](https://nodejs.org/) installed. Then run:
 
-## Deploy on Vercel
+    ```sh
+    npm install
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Install Prisma CLI:**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    ```sh
+    npm install @prisma/cli --save-dev
+    ```
+
+## Setup
+
+1. **Environment Variables:**
+
+    Copy the sample environment file and update it with your configuration.
+
+    ```sh
+    cp .env-sample .env
+    ```
+
+    Edit the [`.env`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fe%3A%2FWebD%2Fauth-template%2Fclient%2F.env%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22776fadd9-e825-4a19-9db2-da2f0ff6ab57%22%5D "e:\WebD\auth-template\client\.env") file to include your database connection string and other environment variables.
+
+2. **Database Migration:**
+
+    Run the following command to apply database migrations:
+
+    ```sh
+    npx prisma migrate dev --name init
+    ```
+
+3. **Build the project:**
+
+    ```sh
+    npm run build
+    ```
+
+4. **Start the development server:**
+
+    ```sh
+    npm run dev
+    ```
+
+## Login
+
+![alt text](image.png)
+
+## SignUp:
+![alt text](image-1.png)
+
+
+

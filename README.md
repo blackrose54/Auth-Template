@@ -57,10 +57,10 @@ Follow these steps to install the project:
     npm run build
     ```
 
-4. **Start the development server:**
+4. **Start the  server:**
 
     ```sh
-    npm run dev
+    npm start
     ```
 
 ## Login

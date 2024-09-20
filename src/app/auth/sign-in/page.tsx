@@ -127,7 +127,7 @@ export default function LoginForm() {
                       href="/auth/reset"
                       className="ml-auto inline-block text-sm "
                     >
-                      <Button variant={"link"} className=" p-0">
+                      <Button variant={"link"} type="button" className=" p-0">
                         Forgot your password?
                       </Button>
                     </Link>

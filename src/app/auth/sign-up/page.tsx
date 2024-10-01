@@ -124,7 +124,7 @@ export default function LoginForm() {
           <div className="mt-4 text-center text-sm">
             Already have an account?{" "}
             <Link href="/auth/sign-in">
-              <Button variant={"link"} className="p-0">
+              <Button variant={"link"} type="button" className="p-0">
                 Sign in
               </Button>
             </Link>
